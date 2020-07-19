@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Attack : State
 {
+    float time = 0f;
+
     public Attack(GameObject go, StateMachine sm) : base(go, sm)
     {
         this.go = go;
@@ -14,7 +16,6 @@ public class Attack : State
     {
         MonsterAI monsterAI = go.GetComponent<MonsterAI>();
         monsterAI.DestroyBlock();
-        sm.CurState = new Walk(go, sm, null);
     }
 
     public override void Exit()
@@ -24,12 +25,23 @@ public class Attack : State
 
     public override void FixedUpdate()
     {
-        base.FixedUpdate();
+        MonsterAI monsterAI = go.GetComponent<MonsterAI>();
+
+        Vector2 dir = Vector2.zero;
+        dir.y = monsterAI.rb2D.velocity.y;
+
+        monsterAI.rb2D.velocity = dir;
     }
 
     public override void Update()
     {
-        base.Update();
+        time += Time.deltaTime;
+
+        if (time > 1f)
+        {
+            time = 0f;
+            sm.CurState = new Walk(go, sm, null);
+        }
     }
 
 }

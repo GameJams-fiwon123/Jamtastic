@@ -24,9 +24,9 @@ public class MonsterAI : MonoBehaviour
     public Transform blocks { get; private set; }
     [HideInInspector]
     public Transform ladders { get; private set; }
-    [HideInInspector]
 
     public Transform floors;
+    public GameObject prefabDestroyParticle;
 
     void Awake()
     {
@@ -66,5 +66,7 @@ public class MonsterAI : MonoBehaviour
     public void DestroyBlock()
     {
         Destroy(blocks.GetChild(0).gameObject);
+        GameObject particleObject = Instantiate(prefabDestroyParticle, transform.position, Quaternion.identity);
+        Destroy(particleObject, 1f);
     }
 }

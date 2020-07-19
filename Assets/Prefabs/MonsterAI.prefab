@@ -146,4 +146,6 @@ MonoBehaviour:
   rb2D: {fileID: 0}
   boxCol2D: {fileID: 0}
   speed: 250
-  blocks: {fileID: 0}
+  floors: {fileID: 0}
+  prefabDestroyParticle: {fileID: 4144603833833694546, guid: 0015d89ab6bf4414bab2fdfc930e2886,
+    type: 3}
