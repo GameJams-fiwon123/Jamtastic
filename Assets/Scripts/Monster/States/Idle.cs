@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Idle : State
 {
-    float time = 0f;
+    private float time = 0f;
 
     public Idle(GameObject go, StateMachine sm) : base(go, sm)
     {

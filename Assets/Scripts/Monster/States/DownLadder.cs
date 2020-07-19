@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DownLadder : State
 {
-    Transform ladder;
-    float time = 0f;
+    private Transform ladder;
+    private float time = 0f;
 
     public DownLadder(GameObject go, StateMachine sm, Transform ladder) : base(go, sm)
     {

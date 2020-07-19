@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(BoxCollider2D))]
 public class MonsterAI : MonoBehaviour
 {
-    StateMachine sm;
+    private StateMachine sm;
 
     [HideInInspector]
     public Rigidbody2D rb2D;
@@ -17,7 +17,6 @@ public class MonsterAI : MonoBehaviour
     public BoxCollider2D boxCol2D;
 
     public float speed = 250f;
-
 
     [HideInInspector]
     public int floorId { get; private set; }
@@ -28,10 +27,9 @@ public class MonsterAI : MonoBehaviour
     [HideInInspector]
     public Transform ladders { get; private set; }
 
-    public Transform floors;
     public GameObject prefabDestroyParticle;
     public Slider sliderEnergy;
-    float timeEnergy = 0;
+    private float timeEnergy = 0;
 
     KeyCode[] keyCodesSequence = {KeyCode.UpArrow, KeyCode.DownArrow, 
                                   KeyCode.LeftArrow, KeyCode.RightArrow,
@@ -53,10 +51,10 @@ public class MonsterAI : MonoBehaviour
 
     public void ChangeFloor(int id)
     {
-        if (id < floors.childCount && id >= 0)
+        if (id < GameManager.instance.floors.childCount && id >= 0)
         {
             floorId = id;
-            currentFloor = floors.GetChild(id);
+            currentFloor = GameManager.instance.floors.GetChild(id);
             blocks = currentFloor.GetChild(0);
             ladders = currentFloor.GetChild(1);
         }

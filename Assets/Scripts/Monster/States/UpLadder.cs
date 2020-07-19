@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UpLadder : State
 {
-    Transform ladder;
+    private Transform ladder;
 
     public UpLadder(GameObject go, StateMachine sm, Transform ladder) : base(go, sm)
     {
@@ -45,7 +45,7 @@ public class UpLadder : State
             monsterAI.ChangeFloor(monsterAI.floorId+1);
             
             this.sm.CurState = new Walk(this.go, this.sm, null);
-                    sm.CurState = new Walk(go, sm, null);
+            
         }
     }
 }
