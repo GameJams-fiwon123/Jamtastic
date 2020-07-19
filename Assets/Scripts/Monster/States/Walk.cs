@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Walk : State
 {
-    Transform ladder;
+    private Transform ladder;
 
     public Walk(GameObject go, StateMachine sm, Transform ladder) : base(go, sm)
     {

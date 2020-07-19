@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Attack : State
 {
-    float time = 0f;
+    private float time = 0f;
 
     public Attack(GameObject go, StateMachine sm) : base(go, sm)
     {
