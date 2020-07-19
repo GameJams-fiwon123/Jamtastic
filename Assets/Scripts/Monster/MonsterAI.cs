@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
@@ -27,6 +30,13 @@ public class MonsterAI : MonoBehaviour
 
     public Transform floors;
     public GameObject prefabDestroyParticle;
+    public Slider sliderEnergy;
+    float timeEnergy = 0;
+
+    KeyCode[] keyCodesSequence = {KeyCode.UpArrow, KeyCode.DownArrow, 
+                                  KeyCode.LeftArrow, KeyCode.RightArrow,
+                                  KeyCode.Space};
+
 
     void Awake()
     {
@@ -38,7 +48,6 @@ public class MonsterAI : MonoBehaviour
     {
         rb2D = GetComponent<Rigidbody2D>();
         boxCol2D = GetComponent<BoxCollider2D>();
-
         ChangeFloor(floorId);
     }
 
@@ -55,7 +64,34 @@ public class MonsterAI : MonoBehaviour
 
     void Update()
     {
+        InputToReturnNormal();
         sm.CurState.Update();
+    }
+
+    private void InputToReturnNormal()
+    {
+        timeEnergy += Time.deltaTime;
+        if (timeEnergy > 0.01f)
+        {
+            timeEnergy = 0f;
+            sliderEnergy.value -= 0.01f;
+        }
+
+        for (int i = 0; i < keyCodesSequence.Length; i++){
+            if (Input.GetKeyDown(keyCodesSequence[i]))
+                sliderEnergy.value += 0.05f;
+        }
+
+        if (sliderEnergy.value == sliderEnergy.maxValue){
+            ReturnNormal();
+        }
+    }
+
+    private void ReturnNormal()
+    {
+        this.enabled = false;
+        rb2D.velocity = new Vector2(0f, rb2D.velocity.y);
+        sliderEnergy.gameObject.SetActive(false);
     }
 
     void FixedUpdate()
