@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Idle : State
 {
+    float time = 0f;
+
     public Idle(GameObject go, StateMachine sm) : base(go, sm)
     {
         this.go = go;
@@ -32,9 +34,18 @@ public class Idle : State
 
     public override void Update()
     {
+        time += Time.deltaTime;
         MonsterAI monsterAI = go.GetComponent<MonsterAI>();
-        if (monsterAI.blocks != null){
-            this.sm.CurState = new Walk(this.go, this.sm);
+        if (time > 0.25f){
+            time = 0f;
+
+            if (monsterAI.blocks.childCount > 0)
+                this.sm.CurState = new Walk(this.go, this.sm, null);
+            else{
+                int indexLadder = Random.Range(0, monsterAI.ladders.childCount);
+                Transform ladder = monsterAI.ladders.GetChild(indexLadder);
+                this.sm.CurState = new Walk(this.go, this.sm, ladder);
+            }
         }
     }
 

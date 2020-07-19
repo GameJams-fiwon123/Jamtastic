@@ -14,7 +14,7 @@ public class Attack : State
     {
         MonsterAI monsterAI = go.GetComponent<MonsterAI>();
         monsterAI.DestroyBlock();
-        sm.CurState = new Walk(go, sm);
+        sm.CurState = new Walk(go, sm, null);
     }
 
     public override void Exit()

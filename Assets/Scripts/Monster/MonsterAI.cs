@@ -15,7 +15,18 @@ public class MonsterAI : MonoBehaviour
 
     public float speed = 250f;
 
-    public Transform blocks;
+
+    [HideInInspector]
+    public int floorId { get; private set; }
+    [HideInInspector]
+    public Transform currentFloor { get; private set; }
+    [HideInInspector]
+    public Transform blocks { get; private set; }
+    [HideInInspector]
+    public Transform ladders { get; private set; }
+    [HideInInspector]
+
+    public Transform floors;
 
     void Awake()
     {
@@ -27,6 +38,19 @@ public class MonsterAI : MonoBehaviour
     {
         rb2D = GetComponent<Rigidbody2D>();
         boxCol2D = GetComponent<BoxCollider2D>();
+
+        ChangeFloor(floorId);
+    }
+
+    public void ChangeFloor(int id)
+    {
+        if (id < floors.childCount && id >= 0)
+        {
+            floorId = id;
+            currentFloor = floors.GetChild(id);
+            blocks = currentFloor.GetChild(0);
+            ladders = currentFloor.GetChild(1);
+        }
     }
 
     void Update()
@@ -39,7 +63,8 @@ public class MonsterAI : MonoBehaviour
         sm.CurState.FixedUpdate();
     }
 
-    public void DestroyBlock(){
+    public void DestroyBlock()
+    {
         Destroy(blocks.GetChild(0).gameObject);
     }
 }
