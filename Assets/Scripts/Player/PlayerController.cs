@@ -19,11 +19,15 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private BoxCollider2D bc2d;
     private GameObject wall;
+    private Animator anim;
+    private SpriteRenderer spr;
 
     void Start() {
 
+        spr = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
         bc2d = GetComponent<BoxCollider2D>();
+        anim = GetComponent<Animator>();
 
     }
 
@@ -40,12 +44,23 @@ public class PlayerController : MonoBehaviour
 
             } else {
 
+                if (moveInputX > 0){
+                    spr.flipX = false;
+                    anim.Play("Walk");
+                }else if (moveInputX < 0){
+                    spr.flipX = true;
+                    anim.Play("Walk");
+                }else
+                {
+                    anim.Play("Idle");
+                }
                 rb.velocity = new Vector2(moveInputX * speed, rb.velocity.y);
 
             }
 
         } else if (Input.GetButton("Build")) {
 
+            anim.Play("Working");
             rb.velocity = new Vector2(0,0);
 
             if(isOnWall) {
@@ -53,6 +68,7 @@ public class PlayerController : MonoBehaviour
                     timeToBuild += Time.deltaTime;
                 } else if(timeToBuild >= 3) {
                     wall.GetComponent<SpriteRenderer>().enabled = true;
+                    wall.transform.GetChild(0).gameObject.SetActive(true);
                 }
             }
 
