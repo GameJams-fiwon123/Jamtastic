@@ -95,6 +95,7 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerStay2D(Collider2D other) {
 
         if(other.gameObject.tag == "Ladder") {
+            GameManager.instance.ChangeFloor(other.transform.parent.parent);
             isOnLadder = true;
         }
 

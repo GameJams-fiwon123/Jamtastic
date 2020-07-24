@@ -6,6 +6,8 @@ public class Walk : State
 {
     private Transform ladder;
 
+    Vector2 dir = Vector2.zero;
+
     public Walk(GameObject go, StateMachine sm, Transform ladder) : base(go, sm)
     {
         this.go = go;
@@ -28,16 +30,16 @@ public class Walk : State
         MonsterAI monsterAI = go.GetComponent<MonsterAI>();
 
         // If exists blocks to destroy
-        if (monsterAI.blocks != null && monsterAI.blocks.childCount > 0)
+        if (monsterAI.currentBlock && monsterAI.currentBlock.GetComponent<SpriteRenderer>().enabled)
         {
 
             // Distance of block
-            Transform block = monsterAI.blocks.GetChild(0);
+            Transform block = monsterAI.currentBlock.transform;
             float d = Vector2.Distance(go.transform.position, block.position);
 
             if (d > 0.5f)
             {
-                Vector2 dir = Vector2.zero;
+                dir = Vector2.zero;
 
                 // dir.x
                 dir.x = block.position.x - go.transform.position.x;
@@ -58,7 +60,7 @@ public class Walk : State
 
             if (d > 0.5f)
             {
-                Vector2 dir = Vector2.zero;
+                dir = Vector2.zero;
 
                 // dir.x
                 dir.x = ladder.position.x - go.transform.position.x;
@@ -78,9 +80,17 @@ public class Walk : State
     {
         MonsterAI monsterAI = go.GetComponent<MonsterAI>();
 
-        if (monsterAI.blocks && monsterAI.blocks.childCount > 0)
+        monsterAI.anim.Play("Walk");
+
+        if (dir.x > 0){
+            monsterAI.spr.flipX = false;
+        } else {
+            monsterAI.spr.flipX = true;
+        }
+
+        if (monsterAI.currentBlock && monsterAI.currentBlock.GetComponent<SpriteRenderer>().enabled)
         { // Exists block
-            Transform block = monsterAI.blocks.GetChild(0);
+            Transform block = monsterAI.currentBlock.transform;
             float d = Vector2.Distance(go.transform.position, block.position);
 
             if (d <= 0.5f)
@@ -95,6 +105,7 @@ public class Walk : State
 
             if (d < 0.5f)
             {
+                // Always down
                 int rangeNumber = Random.Range(0, 2);
                 if (rangeNumber == 0)
                 {

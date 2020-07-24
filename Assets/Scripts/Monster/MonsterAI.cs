@@ -15,6 +15,10 @@ public class MonsterAI : MonoBehaviour
     public Rigidbody2D rb2D;
     [HideInInspector]
     public BoxCollider2D boxCol2D;
+    [HideInInspector]
+    public Animator anim;
+    [HideInInspector]
+    public SpriteRenderer spr;
 
     public float speed = 250f;
 
@@ -31,6 +35,8 @@ public class MonsterAI : MonoBehaviour
     public Slider sliderEnergy;
     private float timeEnergy = 0;
 
+    public Block currentBlock;
+
     KeyCode[] keyCodesSequence = {KeyCode.UpArrow, KeyCode.DownArrow, 
                                   KeyCode.LeftArrow, KeyCode.RightArrow,
                                   KeyCode.Space};
@@ -46,7 +52,11 @@ public class MonsterAI : MonoBehaviour
     {
         rb2D = GetComponent<Rigidbody2D>();
         boxCol2D = GetComponent<BoxCollider2D>();
+        anim = GetComponent<Animator>();
+        spr = GetComponent<SpriteRenderer>();
+        floorId = GameManager.instance.playerFloor.GetComponent<FloorManager>().id;
         ChangeFloor(floorId);
+        sliderEnergy.value = 0f;
     }
 
     public void ChangeFloor(int id)
@@ -89,7 +99,7 @@ public class MonsterAI : MonoBehaviour
     {
         this.enabled = false;
         rb2D.velocity = new Vector2(0f, rb2D.velocity.y);
-        sliderEnergy.gameObject.SetActive(false);
+        GameManager.instance.BackNormal();
     }
 
     void FixedUpdate()
@@ -99,8 +109,51 @@ public class MonsterAI : MonoBehaviour
 
     public void DestroyBlock()
     {
-        Destroy(blocks.GetChild(0).gameObject);
+        currentBlock.GetComponent<SpriteRenderer>().enabled = false;
         GameObject particleObject = Instantiate(prefabDestroyParticle, transform.position, Quaternion.identity);
         Destroy(particleObject, 1f);
+        SearchBlocksInFloor();
+    }
+
+    private void SearchBlocksInFloor()
+    {
+        int findLeft = 0;
+        Block leftBlockAux = currentBlock.leftBlock;
+        while(leftBlockAux && !leftBlockAux.GetComponent<SpriteRenderer>().enabled){
+            leftBlockAux = leftBlockAux.leftBlock;
+            findLeft++;
+        }
+
+        int findRight = 0;
+        Block rightBlockAux = currentBlock.rightBlock;
+        while(rightBlockAux && !rightBlockAux.GetComponent<SpriteRenderer>().enabled){
+            rightBlockAux = rightBlockAux.rightBlock;
+            findRight++;
+        }
+
+        if ((findLeft > findRight && rightBlockAux) || (rightBlockAux && !leftBlockAux)){
+            currentBlock = rightBlockAux;
+        } else if ((findLeft < findRight && leftBlockAux) || (!rightBlockAux && leftBlockAux)){
+            currentBlock = leftBlockAux;
+        } else if (leftBlockAux && rightBlockAux){
+            currentBlock = (Random.Range(0, 2) == 0) ? leftBlockAux : rightBlockAux;
+        } else {
+            currentBlock = null;
+        }
+
+    }
+
+    private void OnTriggerStay2D(Collider2D other) {
+
+        if(other.gameObject.tag == "Ladder") {
+            GameManager.instance.ChangeFloor(other.transform.parent.parent);
+            ChangeFloor(GameManager.instance.playerFloor.GetComponent<FloorManager>().id);
+            if (!currentBlock && sm.CurState.GetType() == typeof(Idle))
+                currentBlock = other.GetComponent<Ladder>().block;
+
+        } else if (other.gameObject.tag == "Wall"){
+            if (!currentBlock && sm.CurState.GetType() == typeof(Idle))
+                currentBlock = other.GetComponent<Block>();
+        }
     }
 }

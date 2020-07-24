@@ -36,14 +36,28 @@ public class Idle : State
     {
         time += Time.deltaTime;
         MonsterAI monsterAI = go.GetComponent<MonsterAI>();
+
+        monsterAI.anim.Play("Idle");
+
         if (time > 0.25f){
             time = 0f;
 
-            if (monsterAI.blocks.childCount > 0)
+            if (monsterAI.currentBlock)
                 this.sm.CurState = new Walk(this.go, this.sm, null);
             else{
-                int indexLadder = Random.Range(0, monsterAI.ladders.childCount);
-                Transform ladder = monsterAI.ladders.GetChild(indexLadder);
+                Transform ladderLeft = monsterAI.ladders.GetChild(0);
+                Transform ladderRight = monsterAI.ladders.GetChild(1);
+
+                float dLeft = Vector2.Distance(ladderLeft.position, monsterAI.transform.position);
+                float dRight = Vector2.Distance(ladderRight.position, monsterAI.transform.position);
+
+                Transform ladder;
+                if (dLeft < dRight){
+                    ladder = ladderLeft;
+                } else{
+                    ladder = ladderRight;
+                }
+
                 this.sm.CurState = new Walk(this.go, this.sm, ladder);
             }
         }

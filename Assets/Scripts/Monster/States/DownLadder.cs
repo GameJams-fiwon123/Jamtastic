@@ -41,7 +41,7 @@ public class DownLadder : State
         MonsterAI monsterAI = go.GetComponent<MonsterAI>();
 
         Vector3 nextPos = ladder.position;
-        nextPos.y -= 1f;
+        nextPos.y -= 4f;
         float d = Vector2.Distance(go.transform.position, nextPos);
         if (d < 0.5f)
         {

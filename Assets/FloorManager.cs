@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class FloorManager : MonoBehaviour
 {
+    public int id = 0;
     public Transform blocks;
     public Transform ladders;
     public Transform beams;
