@@ -16,12 +16,25 @@ public class GameManager : MonoBehaviour
     public Transform floors;
     public Text timerText;
 
+    public GameObject prefabFloor;
+
     public bool isStarted = true;
 
+    private Transform currentFloor;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         instance = this;
+    }
+
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before
+    /// any of the Update methods is called the first time.
+    /// </summary>
+    void Start()
+    {
+        currentFloor = floors.GetChild(floors.childCount-1);
     }
 
     void Update()
@@ -49,6 +62,13 @@ public class GameManager : MonoBehaviour
 
     public void FinishGame(){
         isStarted = false;
+    }
+    public void SpawnFloor()
+    {
+        Vector3 spawnPosition =  currentFloor.position;
+        spawnPosition.y += 3.200f;
+        GameObject objFoor = Instantiate(prefabFloor, spawnPosition, currentFloor.rotation, floors);
+        currentFloor = objFoor.transform;
     }
 
 }

@@ -7949,6 +7949,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 657899857, guid: 1e394d04b2c0d37419e480a33d631258, type: 3}
+      propertyPath: m_Name
+      value: CanvasEnergy
+      objectReference: {fileID: 0}
     - target: {fileID: 657899861, guid: 1e394d04b2c0d37419e480a33d631258, type: 3}
       propertyPath: m_Camera
       value: 

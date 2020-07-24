@@ -71,6 +71,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2404326819978220378}
+  - component: {fileID: 915287380212403269}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -95,6 +96,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &915287380212403269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2404326821510623842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32b2eaeae9253cd4192b776939484b63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blocks: {fileID: 2404326820440371812}
+  ladders: {fileID: 2404326821744857476}
+  beams: {fileID: 2699694809396221536}
+  floorPrefab: {fileID: 2404326821510623842}
 --- !u!1 &2404326821744857475
 GameObject:
   m_ObjectHideFlags: 0
