@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public Transform playerFloor { get; private set; }
 
-    private Transform currentFloor;
+    private Transform lastFloor;
 
     float timeMonster;
 
@@ -43,8 +43,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void Start()
     {
-        currentFloor = floors.GetChild(floors.childCount - 1);
-        playerFloor = currentFloor;
+        lastFloor = floors.GetChild(floors.childCount - 1);
+        playerFloor = lastFloor;
         RandomTimeMonster();
     }
 
@@ -98,13 +98,13 @@ public class GameManager : MonoBehaviour
     }
     public void SpawnFloor()
     {
-        Vector3 spawnPosition = currentFloor.position;
+        Vector3 spawnPosition = lastFloor.position;
         spawnPosition.y += 3.200f;
-        GameObject objFoor = Instantiate(prefabFloor, spawnPosition, currentFloor.rotation, floors);
+        GameObject objFoor = Instantiate(prefabFloor, spawnPosition, lastFloor.rotation, floors);
         int nextId = objFoor.GetComponent<FloorManager>().id + 1;
-        currentFloor = objFoor.transform;
-        currentFloor.GetComponent<FloorManager>().id = nextId;
-        currentFloor.name = "Floor"+nextId;
+        lastFloor = objFoor.transform;
+        lastFloor.GetComponent<FloorManager>().id = nextId;
+        lastFloor.name = "Floor"+nextId;
     }
 
     public void BackNormal()
@@ -118,6 +118,7 @@ public class GameManager : MonoBehaviour
     public void TransformMonster()
     {
         player.GetComponent<MonsterAI>().enabled = true;
+        player.GetComponent<MonsterAI>().ResetAI();
         player.GetComponent<PlayerController>().enabled = false;
         player.transform.GetChild(0).gameObject.SetActive(true);
     }
@@ -129,6 +130,16 @@ public class GameManager : MonoBehaviour
 
     public void ChangeFloor(Transform floor){
         this.playerFloor = floor;
+    }
+
+    public FloorManager GetFloor(int id){
+        if (id < GameManager.instance.floors.childCount && id >= 0)
+        {
+            return GameManager.instance.floors.GetChild(id).GetComponent<FloorManager>();
+        }
+
+
+        return null;
     }
 
 }

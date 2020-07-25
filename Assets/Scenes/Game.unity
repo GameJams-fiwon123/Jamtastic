@@ -210,7 +210,7 @@ PrefabInstance:
     - target: {fileID: 593526204635431146, guid: 831b51e4816b6b34db8af17f2df5fa61,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.88
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 593526204635431146, guid: 831b51e4816b6b34db8af17f2df5fa61,
         type: 3}
@@ -680,8 +680,6 @@ MonoBehaviour:
   anim: {fileID: 0}
   spr: {fileID: 0}
   speed: 250
-  prefabDestroyParticle: {fileID: 4144603833833694546, guid: 0015d89ab6bf4414bab2fdfc930e2886,
-    type: 3}
   sliderEnergy: {fileID: 4653235660712735247}
   currentBlock: {fileID: 0}
 --- !u!1001 &1601258366
@@ -870,7 +868,7 @@ PrefabInstance:
     - target: {fileID: 4013879127290325196, guid: d0ddbf39563191a4587f2075dba1eefa,
         type: 3}
       propertyPath: m_Offset.y
-      value: -3.0819468
+      value: -2.9969084
       objectReference: {fileID: 0}
     - target: {fileID: 4013879127290325196, guid: d0ddbf39563191a4587f2075dba1eefa,
         type: 3}
@@ -880,7 +878,7 @@ PrefabInstance:
     - target: {fileID: 4013879127290325196, guid: d0ddbf39563191a4587f2075dba1eefa,
         type: 3}
       propertyPath: m_Size.y
-      value: 1.6362066
+      value: 1.8062835
       objectReference: {fileID: 0}
     - target: {fileID: 5168382586986349533, guid: d0ddbf39563191a4587f2075dba1eefa,
         type: 3}

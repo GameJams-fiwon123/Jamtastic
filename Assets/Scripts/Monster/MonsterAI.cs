@@ -22,22 +22,12 @@ public class MonsterAI : MonoBehaviour
 
     public float speed = 250f;
 
-    [HideInInspector]
-    public int floorId { get; private set; }
-    [HideInInspector]
-    public Transform currentFloor { get; private set; }
-    [HideInInspector]
-    public Transform blocks { get; private set; }
-    [HideInInspector]
-    public Transform ladders { get; private set; }
-
-    public GameObject prefabDestroyParticle;
     public Slider sliderEnergy;
     private float timeEnergy = 0;
 
     public Block currentBlock;
 
-    KeyCode[] keyCodesSequence = {KeyCode.UpArrow, KeyCode.DownArrow, 
+    KeyCode[] keyCodesSequence = {KeyCode.UpArrow, KeyCode.DownArrow,
                                   KeyCode.LeftArrow, KeyCode.RightArrow,
                                   KeyCode.Space};
 
@@ -45,28 +35,47 @@ public class MonsterAI : MonoBehaviour
     void Awake()
     {
         sm = new StateMachine();
-        sm.CurState = new Idle(gameObject, sm);
     }
 
     void Start()
     {
+        ResetAI();
+    }
+
+    public void ResetAI(){
+        sm.CurState = new Idle(gameObject, sm);
+
         rb2D = GetComponent<Rigidbody2D>();
         boxCol2D = GetComponent<BoxCollider2D>();
         anim = GetComponent<Animator>();
         spr = GetComponent<SpriteRenderer>();
-        floorId = GameManager.instance.playerFloor.GetComponent<FloorManager>().id;
-        ChangeFloor(floorId);
-        sliderEnergy.value = 0f;
-    }
 
-    public void ChangeFloor(int id)
-    {
-        if (id < GameManager.instance.floors.childCount && id >= 0)
+        sliderEnergy.value = 0f;
+        timeEnergy = 0;
+
+        // Ladder
+        if (rb2D.gravityScale == 0)
         {
-            floorId = id;
-            currentFloor = GameManager.instance.floors.GetChild(id);
-            blocks = currentFloor.GetChild(0);
-            ladders = currentFloor.GetChild(1);
+            Transform ladderLeft = GameManager.instance.playerFloor.GetComponent<FloorManager>().ladders.GetChild(0);
+            Transform ladderRight = GameManager.instance.playerFloor.GetComponent<FloorManager>().ladders.GetChild(1);
+
+            float dLeft = Vector2.Distance(ladderLeft.position, transform.position);
+            float dRight = Vector2.Distance(ladderRight.position, transform.position);
+
+            Transform ladder;
+            if (dLeft < dRight)
+            {
+                ladder = ladderLeft;
+            }
+            else
+            {
+                ladder = ladderRight;
+            }
+
+            sm.CurState = new StateLadder(gameObject, sm, ladder);
+
+        } else {
+            // Já achar o bloco mais perto
         }
     }
 
@@ -85,12 +94,14 @@ public class MonsterAI : MonoBehaviour
             sliderEnergy.value -= 0.01f;
         }
 
-        for (int i = 0; i < keyCodesSequence.Length; i++){
+        for (int i = 0; i < keyCodesSequence.Length; i++)
+        {
             if (Input.GetKeyDown(keyCodesSequence[i]))
                 sliderEnergy.value += 0.05f;
         }
 
-        if (sliderEnergy.value == sliderEnergy.maxValue){
+        if (sliderEnergy.value == sliderEnergy.maxValue)
+        {
             ReturnNormal();
         }
     }
@@ -107,53 +118,45 @@ public class MonsterAI : MonoBehaviour
         sm.CurState.FixedUpdate();
     }
 
-    public void DestroyBlock()
+    private void OnTriggerStay2D(Collider2D other)
     {
-        currentBlock.GetComponent<SpriteRenderer>().enabled = false;
-        GameObject particleObject = Instantiate(prefabDestroyParticle, transform.position, Quaternion.identity);
-        Destroy(particleObject, 1f);
-        SearchBlocksInFloor();
-    }
 
-    private void SearchBlocksInFloor()
-    {
-        int findLeft = 0;
-        Block leftBlockAux = currentBlock.leftBlock;
-        while(leftBlockAux && !leftBlockAux.GetComponent<SpriteRenderer>().enabled){
-            leftBlockAux = leftBlockAux.leftBlock;
-            findLeft++;
+        if (!GetComponent<MonsterAI>().enabled)
+        {
+            return;
         }
 
-        int findRight = 0;
-        Block rightBlockAux = currentBlock.rightBlock;
-        while(rightBlockAux && !rightBlockAux.GetComponent<SpriteRenderer>().enabled){
-            rightBlockAux = rightBlockAux.rightBlock;
-            findRight++;
-        }
+        if (other.gameObject.tag == "Ladder")
+        {
+            // In Ladder
+            if (rb2D)
+                rb2D.gravityScale = 0;
 
-        if ((findLeft > findRight && rightBlockAux) || (rightBlockAux && !leftBlockAux)){
-            currentBlock = rightBlockAux;
-        } else if ((findLeft < findRight && leftBlockAux) || (!rightBlockAux && leftBlockAux)){
-            currentBlock = leftBlockAux;
-        } else if (leftBlockAux && rightBlockAux){
-            currentBlock = (Random.Range(0, 2) == 0) ? leftBlockAux : rightBlockAux;
-        } else {
-            currentBlock = null;
-        }
-
-    }
-
-    private void OnTriggerStay2D(Collider2D other) {
-
-        if(other.gameObject.tag == "Ladder") {
+            // Current Floor
             GameManager.instance.ChangeFloor(other.transform.parent.parent);
-            ChangeFloor(GameManager.instance.playerFloor.GetComponent<FloorManager>().id);
-            if (!currentBlock && sm.CurState.GetType() == typeof(Idle))
-                currentBlock = other.GetComponent<Ladder>().block;
 
-        } else if (other.gameObject.tag == "Wall"){
-            if (!currentBlock && sm.CurState.GetType() == typeof(Idle))
-                currentBlock = other.GetComponent<Block>();
         }
+        else if (other.gameObject.tag == "Wall")
+        {
+            // Current Floor
+            GameManager.instance.ChangeFloor(other.transform.parent.parent);
+
+            if (!currentBlock && sm.CurState.GetType() == typeof(Idle))
+            {
+                if (other.GetComponent<SpriteRenderer>().enabled)
+                    currentBlock = other.GetComponent<Block>();
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+
+        if (other.gameObject.tag == "Ladder")
+        {
+            if (rb2D)
+                rb2D.gravityScale = 1;
+        }
+
     }
 }

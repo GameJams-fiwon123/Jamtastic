@@ -64,9 +64,9 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(0,0);
 
             if(isOnWall) {
-                if(timeToBuild < 3) {
+                if(timeToBuild < 1.5f) {
                     timeToBuild += Time.deltaTime;
-                } else if(timeToBuild >= 3) {
+                } else if(timeToBuild >= 1.5f) {
                     wall.GetComponent<SpriteRenderer>().enabled = true;
                     wall.transform.GetChild(0).gameObject.SetActive(true);
                 }
@@ -100,6 +100,7 @@ public class PlayerController : MonoBehaviour
         }
 
         if(other.gameObject.tag == "Wall") {
+            GameManager.instance.ChangeFloor(other.transform.parent.parent);
             isOnWall = true;
             wall = other.gameObject;
         }

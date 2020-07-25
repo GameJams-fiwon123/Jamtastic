@@ -179,3 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94f94eb12d493bc4a8e520c6477226de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftBlock: {fileID: 0}
+  rightBlock: {fileID: 0}
+  prefabDestroyParticle: {fileID: 4144603833833694546, guid: 0015d89ab6bf4414bab2fdfc930e2886,
+    type: 3}

@@ -82,9 +82,12 @@ public class Walk : State
 
         monsterAI.anim.Play("Walk");
 
-        if (dir.x > 0){
+        if (dir.x > 0)
+        {
             monsterAI.spr.flipX = false;
-        } else {
+        }
+        else
+        {
             monsterAI.spr.flipX = true;
         }
 
@@ -105,16 +108,43 @@ public class Walk : State
 
             if (d < 0.5f)
             {
-                // Always down
-                int rangeNumber = Random.Range(0, 2);
-                if (rangeNumber == 0)
+                // Dicidir se vai para cima ou baixo
+                int isUp = Random.Range(0, 2);
+
+                FloorManager nextFloor;
+                // Pegar o next ladder
+                if (isUp == 1)
                 {
-                    this.sm.CurState = new DownLadder(this.go, this.sm, ladder);
+                    nextFloor = GameManager.instance.GetFloor(GameManager.instance.playerFloor.GetComponent<FloorManager>().id + 1);
                 }
                 else
                 {
-                    this.sm.CurState = new UpLadder(this.go, this.sm, ladder);
+                    nextFloor = GameManager.instance.GetFloor(GameManager.instance.playerFloor.GetComponent<FloorManager>().id - 1);
                 }
+
+                // Falar para ir para o nextLadder
+                if (nextFloor)
+                {
+                    Transform ladderLeft = nextFloor.ladders.GetChild(0);
+                    Transform ladderRight = nextFloor.ladders.GetChild(1);
+
+                    float dLeft = Vector2.Distance(ladderLeft.position, monsterAI.transform.position);
+                    float dRight = Vector2.Distance(ladderRight.position, monsterAI.transform.position);
+
+                    Transform nextLadder;
+                    if (dLeft < dRight)
+                    {
+                        nextLadder = ladderLeft;
+                    }
+                    else
+                    {
+                        nextLadder = ladderRight;
+                    }
+
+                    // pass nextLadder
+                    this.sm.CurState = new StateLadder(this.go, this.sm, nextLadder);
+                }
+
 
             }
 

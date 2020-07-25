@@ -29,7 +29,7 @@ public class Idle : State
         Vector2 dir = Vector2.zero;
         dir.y = monsterAI.rb2D.velocity.y;
 
-        monsterAI.rb2D.velocity =  dir;
+        monsterAI.rb2D.velocity = dir;
     }
 
     public override void Update()
@@ -39,26 +39,34 @@ public class Idle : State
 
         monsterAI.anim.Play("Idle");
 
-        if (time > 0.25f){
+        if (time > 0.25f)
+        {
             time = 0f;
 
             if (monsterAI.currentBlock)
                 this.sm.CurState = new Walk(this.go, this.sm, null);
-            else{
-                Transform ladderLeft = monsterAI.ladders.GetChild(0);
-                Transform ladderRight = monsterAI.ladders.GetChild(1);
+            else
+            {
+                Transform ladderLeft = GameManager.instance.playerFloor.GetComponent<FloorManager>().ladders.GetChild(0);
+                Transform ladderRight = GameManager.instance.playerFloor.GetComponent<FloorManager>().ladders.GetChild(1);
 
                 float dLeft = Vector2.Distance(ladderLeft.position, monsterAI.transform.position);
                 float dRight = Vector2.Distance(ladderRight.position, monsterAI.transform.position);
 
                 Transform ladder;
-                if (dLeft < dRight){
+                if (dLeft < dRight)
+                {
                     ladder = ladderLeft;
-                } else{
+                }
+                else
+                {
                     ladder = ladderRight;
                 }
 
                 this.sm.CurState = new Walk(this.go, this.sm, ladder);
+
+                
+
             }
         }
     }
