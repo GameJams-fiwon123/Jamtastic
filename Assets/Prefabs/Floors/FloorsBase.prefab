@@ -38,6 +38,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3109512405273821558}
     m_Modifications:
+    - target: {fileID: 2404326819950060025, guid: 851b9367d2f96304b81ac1fe1c44096a,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2404326819978220378, guid: 851b9367d2f96304b81ac1fe1c44096a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -112,6 +117,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Floor0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6010494869343421551, guid: 851b9367d2f96304b81ac1fe1c44096a,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6010494869393232695, guid: 851b9367d2f96304b81ac1fe1c44096a,
         type: 3}
