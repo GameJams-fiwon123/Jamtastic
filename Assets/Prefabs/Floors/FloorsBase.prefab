@@ -93,10 +93,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2404326820747271140, guid: 851b9367d2f96304b81ac1fe1c44096a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.387
+      objectReference: {fileID: 0}
+    - target: {fileID: 2404326820747271141, guid: 851b9367d2f96304b81ac1fe1c44096a,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: 0.009266853
+      objectReference: {fileID: 0}
+    - target: {fileID: 2404326820747271141, guid: 851b9367d2f96304b81ac1fe1c44096a,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 2.0041056
+      objectReference: {fileID: 0}
     - target: {fileID: 2404326821510623842, guid: 851b9367d2f96304b81ac1fe1c44096a,
         type: 3}
       propertyPath: m_Name
       value: Floor0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6010494869393232695, guid: 851b9367d2f96304b81ac1fe1c44096a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.487
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 851b9367d2f96304b81ac1fe1c44096a, type: 3}
