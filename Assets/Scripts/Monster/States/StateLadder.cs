@@ -28,7 +28,7 @@ public class StateLadder : State
         MonsterAI monsterAI = go.GetComponent<MonsterAI>();
 
         Vector3 nextPos = ladder.position;
-        nextPos.y -= 0.25f;
+        nextPos.y += 0.25f;
 
         Vector2 dir = Vector2.zero;
         dir = nextPos - monsterAI.transform.position;
@@ -41,7 +41,7 @@ public class StateLadder : State
         MonsterAI monsterAI = go.GetComponent<MonsterAI>();
 
         Vector3 nextPos = ladder.position;
-        nextPos.y -= 0.25f;
+        nextPos.y += 0.25f;
 
         float d = Vector2.Distance(go.transform.position, nextPos);
 
@@ -50,6 +50,8 @@ public class StateLadder : State
             monsterAI.currentBlock = ladder.GetComponent<Ladder>().block;
             if (!monsterAI.currentBlock.GetComponent<SpriteRenderer>().enabled)
                 SearchBlocksInFloor();
+
+            monsterAI.rb2D.velocity = Vector2.zero;
 
             this.sm.CurState = new Walk(this.go, this.sm, null);
 

@@ -76,7 +76,24 @@ public class MonsterAI : MonoBehaviour
 
         } else {
             // Já achar o bloco mais perto
+            SearchBlocksInFloor();
         }
+    }
+
+    private void SearchBlocksInFloor()
+    {
+        FloorManager currentFloor = GameManager.instance.playerFloor.GetComponent<FloorManager>();
+
+        currentBlock = null;
+
+        float d = 10000;
+        foreach(Transform block in currentFloor.blocks){
+            if (Vector2.Distance(block.position, transform.position) < d && block.GetComponent<SpriteRenderer>().enabled){
+                d = Vector2.Distance(block.position, transform.position);
+                currentBlock = block.GetComponent<Block>();
+            }
+        }
+
     }
 
     void Update()
