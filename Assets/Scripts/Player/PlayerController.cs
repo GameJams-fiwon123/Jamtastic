@@ -68,7 +68,6 @@ public class PlayerController : MonoBehaviour
                     timeToBuild += Time.deltaTime;
                 } else if(timeToBuild >= 1.5f) {
                     wall.GetComponent<SpriteRenderer>().enabled = true;
-                    wall.transform.GetChild(0).gameObject.SetActive(true);
                 }
             }
 

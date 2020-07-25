@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
         Vector3 spawnPosition = lastFloor.position;
         spawnPosition.y += 3.200f;
         GameObject objFoor = Instantiate(prefabFloor, spawnPosition, lastFloor.rotation, floors);
-        int nextId = objFoor.GetComponent<FloorManager>().id + 1;
+        int nextId = lastFloor.GetComponent<FloorManager>().id + 1;
         lastFloor = objFoor.transform;
         lastFloor.GetComponent<FloorManager>().id = nextId;
         lastFloor.name = "Floor"+nextId;
