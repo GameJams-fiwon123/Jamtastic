@@ -197,6 +197,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 564617207536727018, guid: 831b51e4816b6b34db8af17f2df5fa61,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: -1.2767689
+      objectReference: {fileID: 0}
+    - target: {fileID: 564617207536727018, guid: 831b51e4816b6b34db8af17f2df5fa61,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.24646235
+      objectReference: {fileID: 0}
     - target: {fileID: 593526204635431144, guid: 831b51e4816b6b34db8af17f2df5fa61,
         type: 3}
       propertyPath: m_Name
@@ -620,6 +630,12 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6418551626551790446, guid: d1152fe2a9df85d4eaaa712d0bdffed4,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: ac581861222514645998d6286c6e5e99,
+        type: 3}
     - target: {fileID: 6418551626551790447, guid: d1152fe2a9df85d4eaaa712d0bdffed4,
         type: 3}
       propertyPath: m_Enabled
@@ -710,6 +726,12 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6418551628321126687, guid: d1152fe2a9df85d4eaaa712d0bdffed4,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: bad9019e34e6e4449a122d7dae65cca9,
+        type: 3}
     - target: {fileID: 6418551628321126753, guid: d1152fe2a9df85d4eaaa712d0bdffed4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -724,6 +746,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7159267556236106045, guid: d1152fe2a9df85d4eaaa712d0bdffed4,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8453760843700767639, guid: d1152fe2a9df85d4eaaa712d0bdffed4,
         type: 3}
@@ -1208,7 +1235,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2092533679
 Transform:
   m_ObjectHideFlags: 0

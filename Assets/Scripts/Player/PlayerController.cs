@@ -60,10 +60,11 @@ public class PlayerController : MonoBehaviour
 
         } else if (Input.GetButton("Build")) {
 
-            anim.Play("Working");
             rb.velocity = new Vector2(0,0);
 
             if(isOnWall) {
+                anim.Play("Working");
+                
                 if(timeToBuild < 1.5f) {
                     timeToBuild += Time.deltaTime;
                 } else if(timeToBuild >= 1.5f) {

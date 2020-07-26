@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour
 
     private void RandomTimeMonster()
     {
-        timeMonster = Random.Range(1f, 10f);
+        timeMonster = Random.Range(5f, 10f);
     }
 
     public void ChangeFloor(Transform floor){
