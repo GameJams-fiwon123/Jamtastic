@@ -50,6 +50,9 @@ public class Attack : State
             monsterAI.currentBlock = (Random.Range(0, 2) == 0) ? leftBlockAux : rightBlockAux;
         } else {
             monsterAI.currentBlock = null;
+            if (GameManager.instance.playerFloor.GetComponent<FloorManager>().id == 0){
+                monsterAI.ReturnNormal();
+            }
         }
 
     }

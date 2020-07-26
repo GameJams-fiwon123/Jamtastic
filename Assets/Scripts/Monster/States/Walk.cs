@@ -15,16 +15,6 @@ public class Walk : State
         this.ladder = ladder;
     }
 
-    public override void Enter()
-    {
-        // Nothing
-    }
-
-    public override void Exit()
-    {
-        // Nothing
-    }
-
     public override void FixedUpdate()
     {
         MonsterAI monsterAI = go.GetComponent<MonsterAI>();
@@ -37,42 +27,36 @@ public class Walk : State
             Transform block = monsterAI.currentBlock.transform;
             float d = Vector2.Distance(go.transform.position, block.position);
 
-            if (d > 0.5f)
-            {
-                dir = Vector2.zero;
+            dir = Vector2.zero;
 
-                // dir.x
-                dir.x = block.position.x - go.transform.position.x;
-                dir.x = (dir.x >= 0) ? 1f : -1f;
-                dir.x = dir.x * monsterAI.speed * Time.deltaTime;
+            // dir.x
+            dir.x = block.position.x - go.transform.position.x;
+            dir.x = (dir.x >= 0) ? 1f : -1f;
+            dir.x = dir.x * monsterAI.speed * Time.deltaTime;
 
-                // dir.y
-                dir.y = monsterAI.rb2D.velocity.y;
+            // dir.y
+            dir.y = monsterAI.rb2D.velocity.y;
 
-                // Velocity
-                monsterAI.rb2D.velocity = dir;
-            }
+            // Velocity
+            monsterAI.rb2D.velocity = dir;
         }
         else if (ladder)
         {
             // Distance of ladder
             float d = Vector2.Distance(go.transform.position, ladder.position);
 
-            if (d > 0.5f)
-            {
-                dir = Vector2.zero;
+            dir = Vector2.zero;
 
-                // dir.x
-                dir.x = ladder.position.x - go.transform.position.x;
-                dir.x = (dir.x >= 0) ? 1f : -1f;
-                dir.x = dir.x * monsterAI.speed * Time.deltaTime;
+            // dir.x
+            dir.x = ladder.position.x - go.transform.position.x;
+            dir.x = (dir.x >= 0) ? 1f : -1f;
+            dir.x = dir.x * monsterAI.speed * Time.deltaTime;
 
-                // dir.y
-                dir.y = monsterAI.rb2D.velocity.y;
+            // dir.y
+            dir.y = monsterAI.rb2D.velocity.y;
 
-                // Velocity
-                monsterAI.rb2D.velocity = dir;
-            }
+            // Velocity
+            monsterAI.rb2D.velocity = dir;
         }
     }
 
@@ -104,23 +88,15 @@ public class Walk : State
         else if (ladder)
         {
 
-            float d = Vector2.Distance(go.transform.position, ladder.position);
+            Vector3 nextPos = ladder.position;
+            nextPos.y += 0.25f;
+
+            float d = Vector2.Distance(go.transform.position, nextPos);
 
             if (d < 0.5f)
             {
-                // Dicidir se vai para cima ou baixo
-                int isUp = Random.Range(0, 2);
 
-                FloorManager nextFloor;
-                // Pegar o next ladder
-                if (isUp == 1)
-                {
-                    nextFloor = GameManager.instance.GetFloor(GameManager.instance.playerFloor.GetComponent<FloorManager>().id + 1);
-                }
-                else
-                {
-                    nextFloor = GameManager.instance.GetFloor(GameManager.instance.playerFloor.GetComponent<FloorManager>().id - 1);
-                }
+                FloorManager nextFloor = GameManager.instance.GetFloor(GameManager.instance.playerFloor.GetComponent<FloorManager>().id - 1);
 
                 // Falar para ir para o nextLadder
                 if (nextFloor)
@@ -140,6 +116,7 @@ public class Walk : State
                     {
                         nextLadder = ladderRight;
                     }
+
 
                     // pass nextLadder
                     this.sm.CurState = new StateLadder(this.go, this.sm, nextLadder);

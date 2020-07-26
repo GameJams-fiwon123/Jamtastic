@@ -42,7 +42,8 @@ public class MonsterAI : MonoBehaviour
         ResetAI();
     }
 
-    public void ResetAI(){
+    public void ResetAI()
+    {
         sm.CurState = new Idle(gameObject, sm);
 
         rb2D = GetComponent<Rigidbody2D>();
@@ -74,10 +75,14 @@ public class MonsterAI : MonoBehaviour
 
             sm.CurState = new StateLadder(gameObject, sm, ladder);
 
-        } else {
+        }
+        else
+        {
             // Já achar o bloco mais perto
             SearchBlocksInFloor();
         }
+
+        rb2D.velocity = Vector2.zero;
     }
 
     private void SearchBlocksInFloor()
@@ -87,8 +92,10 @@ public class MonsterAI : MonoBehaviour
         currentBlock = null;
 
         float d = 10000;
-        foreach(Transform block in currentFloor.blocks){
-            if (Vector2.Distance(block.position, transform.position) < d && block.GetComponent<SpriteRenderer>().enabled){
+        foreach (Transform block in currentFloor.blocks)
+        {
+            if (Vector2.Distance(block.position, transform.position) < d && block.GetComponent<SpriteRenderer>().enabled)
+            {
                 d = Vector2.Distance(block.position, transform.position);
                 currentBlock = block.GetComponent<Block>();
             }
@@ -123,7 +130,7 @@ public class MonsterAI : MonoBehaviour
         }
     }
 
-    private void ReturnNormal()
+    public void ReturnNormal()
     {
         this.enabled = false;
         rb2D.velocity = new Vector2(0f, rb2D.velocity.y);

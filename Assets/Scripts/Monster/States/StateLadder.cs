@@ -45,6 +45,7 @@ public class StateLadder : State
 
         float d = Vector2.Distance(go.transform.position, nextPos);
 
+
         if (d < 0.5f)
         {
             monsterAI.currentBlock = ladder.GetComponent<Ladder>().block;

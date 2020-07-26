@@ -47,6 +47,11 @@ public class Idle : State
                 this.sm.CurState = new Walk(this.go, this.sm, null);
             else
             {
+                if (GameManager.instance.playerFloor.GetComponent<FloorManager>().id == 0 && !monsterAI.currentBlock)
+                {
+                    monsterAI.ReturnNormal();
+                }
+
                 Transform ladderLeft = GameManager.instance.playerFloor.GetComponent<FloorManager>().ladders.GetChild(0);
                 Transform ladderRight = GameManager.instance.playerFloor.GetComponent<FloorManager>().ladders.GetChild(1);
 
@@ -64,9 +69,6 @@ public class Idle : State
                 }
 
                 this.sm.CurState = new Walk(this.go, this.sm, ladder);
-
-                
-
             }
         }
     }
