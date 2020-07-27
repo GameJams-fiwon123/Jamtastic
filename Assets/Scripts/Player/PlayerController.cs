@@ -82,11 +82,12 @@ public class PlayerController : MonoBehaviour
 
             rb.velocity = new Vector2(0, 0);
 
-            if (isOnWall)
+            if (isOnWall && !wall.GetComponent<SpriteRenderer>().enabled)
             {
                 anim.Play("Working");
-                if (!wall.GetComponent<SpriteRenderer>().enabled)
-                    wall.GetComponent<Block>().Build(66f*Time.deltaTime);
+                wall.GetComponent<Block>().Build(66f*Time.deltaTime);
+            } else {
+                anim.Play("Idle");
             }
 
         }
