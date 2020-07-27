@@ -85,15 +85,8 @@ public class PlayerController : MonoBehaviour
             if (isOnWall)
             {
                 anim.Play("Working");
-
-                if (timeToBuild < 1.5f)
-                {
-                    timeToBuild += Time.deltaTime;
-                }
-                else if (timeToBuild >= 1.5f)
-                {
-                    wall.GetComponent<SpriteRenderer>().enabled = true;
-                }
+                if (!wall.GetComponent<SpriteRenderer>().enabled)
+                    wall.GetComponent<Block>().Build(66f*Time.deltaTime);
             }
 
         }
