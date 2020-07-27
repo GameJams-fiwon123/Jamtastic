@@ -105,8 +105,13 @@ public class MonsterAI : MonoBehaviour
 
     void Update()
     {
-        InputToReturnNormal();
-        sm.CurState.Update();
+        if (GameManager.instance.isStarted)
+        {
+            InputToReturnNormal();
+            sm.CurState.Update();
+        } else {
+            ReturnNormal();
+        }
     }
 
     private void InputToReturnNormal()

@@ -23,6 +23,9 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     private SpriteRenderer spr;
 
+    public AudioSource audioBuilding;
+    public AudioClip[] clipsBuilding;
+
 
     void Start()
     {
@@ -37,15 +40,23 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
-        moveInputX = Input.GetAxis("Horizontal");
-        moveInputY = Input.GetAxis("Vertical");
+        if (GameManager.instance.isStarted)
+        {
+            moveInputX = Input.GetAxis("Horizontal");
+            moveInputY = Input.GetAxis("Vertical");
 
-        isBuilding = Input.GetButton("Build");
+            isBuilding = Input.GetButton("Build");
+        }
 
     }
 
     private void FixedUpdate()
     {
+        if (!GameManager.instance.isStarted)
+        {
+            return;
+        }
+
         if (!isBuilding)
         {
 
@@ -85,8 +96,17 @@ public class PlayerController : MonoBehaviour
             if (isOnWall && !wall.GetComponent<SpriteRenderer>().enabled)
             {
                 anim.Play("Working");
-                wall.GetComponent<Block>().Build(66f*Time.deltaTime);
-            } else {
+                wall.GetComponent<Block>().Build(66f * Time.deltaTime);
+
+                if (!audioBuilding.isPlaying)
+                {
+                    audioBuilding.clip = clipsBuilding[Random.Range(0, clipsBuilding.Length)];
+                    audioBuilding.Play();
+                }
+            }
+            else
+            {
+                audioBuilding.Stop();
                 anim.Play("Idle");
             }
 

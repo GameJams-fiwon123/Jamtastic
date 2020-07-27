@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     public Text timerText;
 
     public GameObject prefabFloor;
+    public GameObject gameOverPanel;
 
     public bool isStarted = true;
 
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour
     {
         lastFloor = floors.GetChild(floors.childCount - 1);
         playerFloor = lastFloor;
+        gameOverPanel.SetActive(false);
         RandomTimeMonster();
     }
 
@@ -95,6 +97,7 @@ public class GameManager : MonoBehaviour
     public void FinishGame()
     {
         isStarted = false;
+        gameOverPanel.SetActive(true);
     }
     public void SpawnFloor()
     {
@@ -113,6 +116,7 @@ public class GameManager : MonoBehaviour
         player.GetComponent<PlayerController>().enabled = true;
         player.transform.GetChild(0).gameObject.SetActive(false);
         RandomTimeMonster();
+        AudioManager.instance.ChangeMusicToGoodGuy();
     }
 
     public void TransformMonster()
@@ -121,6 +125,7 @@ public class GameManager : MonoBehaviour
         player.GetComponent<MonsterAI>().ResetAI();
         player.GetComponent<PlayerController>().enabled = false;
         player.transform.GetChild(0).gameObject.SetActive(true);
+        AudioManager.instance.ChangeMusicToBadGuy();
     }
 
     private void RandomTimeMonster()

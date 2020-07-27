@@ -8,6 +8,8 @@ public class Block : MonoBehaviour
     public Block rightBlock;
     public GameObject prefabDestroyParticle;
 
+    public AudioSource audio;
+
     private float progress = 0f;
 
     public void DestroyBlock()
@@ -16,6 +18,7 @@ public class Block : MonoBehaviour
         GameObject objParticle = Instantiate(prefabDestroyParticle, transform.position, transform.rotation);
         Destroy(objParticle, 1f);
         progress = 0f;
+        audio.Play();
     }
 
     public void Build(float playerBuild)
