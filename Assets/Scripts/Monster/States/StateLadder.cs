@@ -40,6 +40,8 @@ public class StateLadder : State
     {
         MonsterAI monsterAI = go.GetComponent<MonsterAI>();
 
+        monsterAI.anim.Play("Climb");
+
         Vector3 nextPos = ladder.position;
         nextPos.y += 0.25f;
 

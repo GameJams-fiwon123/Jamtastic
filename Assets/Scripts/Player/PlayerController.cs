@@ -57,11 +57,10 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (!isBuilding || 
-            (isBuilding && wall && wall.GetComponent<SpriteRenderer>().enabled) ||  
+        if (!isBuilding ||
+            (isBuilding && wall && wall.GetComponent<SpriteRenderer>().enabled) ||
             (isBuilding && wall && !wall.GetComponent<SpriteRenderer>().enabled && !IsOnGround()) ||
-            (isBuilding && !wall) ||
-            isOnLadder)
+            (isBuilding && !wall))
             Walk();
         else if (isBuilding)
         {
@@ -76,7 +75,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isOnLadder)
         {
-
+            anim.Play("Climb");
             rb.gravityScale = 0;
 
             if (moveInputY == 0)
@@ -135,16 +134,21 @@ public class PlayerController : MonoBehaviour
             if (moveInputX > 0)
             {
                 spr.flipX = false;
-                anim.Play("Walk");
+
+                if (!isOnLadder)
+                    anim.Play("Walk");
             }
             else if (moveInputX < 0)
             {
                 spr.flipX = true;
-                anim.Play("Walk");
+                
+                if (!isOnLadder)
+                    anim.Play("Walk");
             }
             else
             {
-                anim.Play("Idle");
+                if (!isOnLadder)
+                    anim.Play("Idle");
             }
             rb.velocity = new Vector2(moveInputX * speed, rb.velocity.y);
 

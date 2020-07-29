@@ -17,9 +17,13 @@ public class GameManager : MonoBehaviour
     public Transform floors;
     public Text timerText;
     public Text scoreText;
+    public Text hiScoreText;
 
     public GameObject prefabFloor;
     public GameObject gameOverPanel;
+
+    public RuntimeAnimatorController animPlayer;
+    public RuntimeAnimatorController animMonster;
 
     public bool isStarted = true;
 
@@ -58,7 +62,7 @@ public class GameManager : MonoBehaviour
             ProcessTimeGame();
             ProcessTimeMonster();
 
-            scoreText.text = string.Format("Pontos: {0:00000000}", score);
+            scoreText.text = string.Format("{0:00000000}", score);
         }
         else
         {
@@ -112,6 +116,10 @@ public class GameManager : MonoBehaviour
     public void FinishGame()
     {
         isStarted = false;
+        if (score > PlayerPrefs.GetFloat("hiScore", 0f)){
+            PlayerPrefs.SetFloat("hiScore", score);
+        }
+        hiScoreText.text =  "Melhor Pontuação: \n" + PlayerPrefs.GetFloat("hiScore", 0f).ToString();
         gameOverPanel.SetActive(true);
     }
     public void SpawnFloor()
@@ -133,6 +141,7 @@ public class GameManager : MonoBehaviour
         player.GetComponent<MonsterAI>().enabled = false;
         player.GetComponent<PlayerController>().enabled = true;
         player.transform.GetChild(0).gameObject.SetActive(false);
+        player.GetComponent<Animator>().runtimeAnimatorController = animPlayer;
         RandomTimeMonster();
         AudioManager.instance.ChangeMusicToGoodGuy();
     }
@@ -149,6 +158,7 @@ public class GameManager : MonoBehaviour
             player.GetComponent<MonsterAI>().ResetAI();
             player.GetComponent<PlayerController>().enabled = false;
             player.transform.GetChild(0).gameObject.SetActive(true);
+            player.GetComponent<Animator>().runtimeAnimatorController = animMonster;
             AudioManager.instance.ChangeMusicToBadGuy();
         }
     }

@@ -15,11 +15,10 @@ public class Attack : State
     public override void Enter()
     {
         MonsterAI monsterAI = go.GetComponent<MonsterAI>();
-        DestroyBlock();
-        SearchBlocksInFloor();
+        monsterAI.anim.Play("Destroy");
     }
 
-    public void DestroyBlock()
+    private void DestroyBlock()
     {
         MonsterAI monsterAI = go.GetComponent<MonsterAI>();
         monsterAI.currentBlock.GetComponent<Block>().DestroyBlock();
@@ -30,27 +29,37 @@ public class Attack : State
         MonsterAI monsterAI = go.GetComponent<MonsterAI>();
         int findLeft = 0;
         Block leftBlockAux = monsterAI.currentBlock.leftBlock;
-        while(leftBlockAux && !leftBlockAux.GetComponent<SpriteRenderer>().enabled){
+        while (leftBlockAux && !leftBlockAux.GetComponent<SpriteRenderer>().enabled)
+        {
             leftBlockAux = leftBlockAux.leftBlock;
             findLeft++;
         }
 
         int findRight = 0;
         Block rightBlockAux = monsterAI.currentBlock.rightBlock;
-        while(rightBlockAux && !rightBlockAux.GetComponent<SpriteRenderer>().enabled){
+        while (rightBlockAux && !rightBlockAux.GetComponent<SpriteRenderer>().enabled)
+        {
             rightBlockAux = rightBlockAux.rightBlock;
             findRight++;
         }
 
-        if ((findLeft > findRight && rightBlockAux) || (rightBlockAux && !leftBlockAux)){
+        if ((findLeft > findRight && rightBlockAux) || (rightBlockAux && !leftBlockAux))
+        {
             monsterAI.currentBlock = rightBlockAux;
-        } else if ((findLeft < findRight && leftBlockAux) || (!rightBlockAux && leftBlockAux)){
+        }
+        else if ((findLeft < findRight && leftBlockAux) || (!rightBlockAux && leftBlockAux))
+        {
             monsterAI.currentBlock = leftBlockAux;
-        } else if (leftBlockAux && rightBlockAux){
+        }
+        else if (leftBlockAux && rightBlockAux)
+        {
             monsterAI.currentBlock = (Random.Range(0, 2) == 0) ? leftBlockAux : rightBlockAux;
-        } else {
+        }
+        else
+        {
             monsterAI.currentBlock = null;
-            if (GameManager.instance.playerFloor.GetComponent<FloorManager>().id == 0){
+            if (GameManager.instance.playerFloor.GetComponent<FloorManager>().id == 0)
+            {
                 monsterAI.ReturnNormal();
             }
         }
@@ -78,6 +87,8 @@ public class Attack : State
 
         if (time > 1f)
         {
+            DestroyBlock();
+            SearchBlocksInFloor();
             time = 0f;
             sm.CurState = new Walk(go, sm, null);
         }
