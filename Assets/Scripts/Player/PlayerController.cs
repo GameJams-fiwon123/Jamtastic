@@ -57,61 +57,23 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (!isBuilding)
-        {
-
-            if ((rb.position.x <= leftBorder && moveInputX < 0) || (rb.position.x >= rightBorder && moveInputX > 0))
-            {
-
-                rb.velocity = new Vector2(moveInputX * 0, rb.velocity.y);
-
-            }
-            else
-            {
-
-                if (moveInputX > 0)
-                {
-                    spr.flipX = false;
-                    anim.Play("Walk");
-                }
-                else if (moveInputX < 0)
-                {
-                    spr.flipX = true;
-                    anim.Play("Walk");
-                }
-                else
-                {
-                    anim.Play("Idle");
-                }
-                rb.velocity = new Vector2(moveInputX * speed, rb.velocity.y);
-
-            }
-
-        }
+        if (!isBuilding || 
+            (isBuilding && wall && wall.GetComponent<SpriteRenderer>().enabled) ||  
+            (isBuilding && wall && !wall.GetComponent<SpriteRenderer>().enabled && !IsOnGround()) ||
+            (isBuilding && !wall) ||
+            isOnLadder)
+            Walk();
         else if (isBuilding)
         {
-
-            rb.velocity = new Vector2(0, 0);
-
-            if (isOnWall && !wall.GetComponent<SpriteRenderer>().enabled)
-            {
-                anim.Play("Working");
-                wall.GetComponent<Block>().Build(66f * Time.deltaTime);
-
-                if (!audioBuilding.isPlaying)
-                {
-                    audioBuilding.clip = clipsBuilding[Random.Range(0, clipsBuilding.Length)];
-                    audioBuilding.Play();
-                }
-            }
-            else
-            {
-                audioBuilding.Stop();
-                anim.Play("Idle");
-            }
-
+            BuildWall();
         }
 
+        MoveLadder();
+
+    }
+
+    private void MoveLadder()
+    {
         if (isOnLadder)
         {
 
@@ -133,6 +95,77 @@ public class PlayerController : MonoBehaviour
             rb.gravityScale = 1;
 
         }
+    }
+
+    private void BuildWall()
+    {
+        if (isOnWall && !wall.GetComponent<SpriteRenderer>().enabled && IsOnGround())
+        {
+            rb.velocity = new Vector2(0, rb.velocity.y);
+            anim.Play("Working");
+            wall.GetComponent<Block>().Build(66f * Time.deltaTime);
+
+            if (!audioBuilding.isPlaying)
+            {
+                audioBuilding.clip = clipsBuilding[Random.Range(0, clipsBuilding.Length)];
+                audioBuilding.Play();
+            }
+        }
+        else
+        {
+            audioBuilding.Stop();
+
+        }
+
+
+    }
+
+    private void Walk()
+    {
+
+        if ((rb.position.x <= leftBorder && moveInputX < 0) || (rb.position.x >= rightBorder && moveInputX > 0))
+        {
+
+            rb.velocity = new Vector2(moveInputX * 0, rb.velocity.y);
+
+        }
+        else
+        {
+
+            if (moveInputX > 0)
+            {
+                spr.flipX = false;
+                anim.Play("Walk");
+            }
+            else if (moveInputX < 0)
+            {
+                spr.flipX = true;
+                anim.Play("Walk");
+            }
+            else
+            {
+                anim.Play("Idle");
+            }
+            rb.velocity = new Vector2(moveInputX * speed, rb.velocity.y);
+
+        }
+    }
+
+    private bool IsOnGround()
+    {
+
+        LayerMask mask = LayerMask.GetMask("Ground");
+
+        // Cast a ray straight down.
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, 1.5f, mask);
+
+        // If it hits something...
+        if (hit.collider != null)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private void OnTriggerStay2D(Collider2D other)

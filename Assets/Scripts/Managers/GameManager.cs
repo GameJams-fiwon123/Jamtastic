@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
 
     private Transform lastFloor;
 
+    private float sec, min;
+
     float timeMonster;
 
     // Start is called before the first frame update
@@ -44,6 +46,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void Start()
     {
+        min = time/60;
+        sec = time%60;
+
         lastFloor = floors.GetChild(floors.childCount - 1);
         playerFloor = lastFloor;
         gameOverPanel.SetActive(false);
@@ -61,20 +66,27 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            time = 0;
+            min = 0;
+            sec = 0;
             timerText.text = time.ToString("0");
         }
     }
 
     private void ProcessTimeGame()
     {
-        time -= Time.deltaTime;
-        timerText.text = time.ToString("0");
+        sec -= Time.deltaTime;
+        if (sec < 0){
+            sec = 59f;
+            min--;
+        } 
+
+        timerText.text = string.Format("{0:0}:{1:00}", min, sec);
 
 
-        if (time < 0)
+        if (min < 0)
         {
-            time = 0;
+            min = 0;
+            sec = 0;
             FinishGame();
         }
     }
