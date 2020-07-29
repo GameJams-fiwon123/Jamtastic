@@ -75,15 +75,16 @@ public class PlayerController : MonoBehaviour
     {
         if (isOnLadder)
         {
-            anim.Play("Climb");
             rb.gravityScale = 0;
 
             if (moveInputY == 0)
             {
+                anim.Play("Climb_Idle");
                 rb.velocity = new Vector2(rb.velocity.x, 0);
             }
             else if (moveInputY != 0)
             {
+                anim.Play("Climb");
                 rb.velocity = new Vector2(rb.velocity.x, moveInputY * speed);
             }
 
