@@ -9,6 +9,7 @@ public class Block : MonoBehaviour
     public GameObject prefabDestroyParticle;
 
     public AudioSource audio;
+    public Animator anim;
 
     private float progress = 0f;
 
@@ -16,8 +17,10 @@ public class Block : MonoBehaviour
     {
         GetComponent<SpriteRenderer>().enabled = false;
         GameObject objParticle = Instantiate(prefabDestroyParticle, transform.position, transform.rotation);
+        GameManager.instance.DestroyWall();
         Destroy(objParticle, 1f);
         progress = 0f;
+        anim.Play("LoseScore");
         audio.Play();
     }
 
@@ -29,6 +32,8 @@ public class Block : MonoBehaviour
         }
         else if (progress >= 100f)
         {
+             anim.Play("GainScore");
+            GameManager.instance.BuildWall();
             GetComponent<SpriteRenderer>().enabled = true;
         }
     }

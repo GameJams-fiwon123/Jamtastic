@@ -10,6 +10,8 @@ public class FloorManager : MonoBehaviour
     public Transform ladders;
     public Transform beams;
 
+    public Animator anim;
+
     bool isBuild = false;
 
 
@@ -33,6 +35,8 @@ public class FloorManager : MonoBehaviour
         }
 
         isBuild = true;
+        if (id != 0)
+            anim.Play("GainScore");
         GameManager.instance.SpawnFloor();
 
     }

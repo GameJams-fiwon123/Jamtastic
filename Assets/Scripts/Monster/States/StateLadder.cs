@@ -48,13 +48,21 @@ public class StateLadder : State
 
         if (d < 0.5f)
         {
-            monsterAI.currentBlock = ladder.GetComponent<Ladder>().block;
-            if (!monsterAI.currentBlock.GetComponent<SpriteRenderer>().enabled)
-                SearchBlocksInFloor();
+            if (GameManager.instance.playerFloor.GetComponent<FloorManager>().id != 0)
+            {
+                monsterAI.currentBlock = ladder.GetComponent<Ladder>().block;
+                if (!monsterAI.currentBlock.GetComponent<SpriteRenderer>().enabled)
+                    SearchBlocksInFloor();
 
-            monsterAI.rb2D.velocity = Vector2.zero;
 
-            this.sm.CurState = new Walk(this.go, this.sm, null);
+                monsterAI.rb2D.velocity = Vector2.zero;
+
+                this.sm.CurState = new Walk(this.go, this.sm, null);
+            }
+            else
+            {
+                monsterAI.ReturnNormal();
+            }
 
         }
     }

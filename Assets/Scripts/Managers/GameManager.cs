@@ -11,12 +11,12 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public float score = 0f;
-    public int floorScore = 0;
-    public int wallScore = 0;
+
     public float time = 180;
 
     public Transform floors;
     public Text timerText;
+    public Text scoreText;
 
     public GameObject prefabFloor;
     public GameObject gameOverPanel;
@@ -34,20 +34,16 @@ public class GameManager : MonoBehaviour
 
     float timeMonster;
 
-    // Start is called before the first frame update
+
     void Awake()
     {
         instance = this;
     }
 
-    /// <summary>
-    /// Start is called on the frame when a script is enabled just before
-    /// any of the Update methods is called the first time.
-    /// </summary>
     void Start()
     {
-        min = time/60;
-        sec = time%60;
+        min = time / 60;
+        sec = time % 60;
 
         lastFloor = floors.GetChild(floors.childCount - 1);
         playerFloor = lastFloor;
@@ -59,10 +55,10 @@ public class GameManager : MonoBehaviour
     {
         if (isStarted)
         {
-
             ProcessTimeGame();
             ProcessTimeMonster();
 
+            scoreText.text = string.Format("Pontos: {0:00000000}", score);
         }
         else
         {
@@ -75,10 +71,11 @@ public class GameManager : MonoBehaviour
     private void ProcessTimeGame()
     {
         sec -= Time.deltaTime;
-        if (sec < 0){
+        if (sec < 0)
+        {
             sec = 59f;
             min--;
-        } 
+        }
 
         timerText.text = string.Format("{0:0}:{1:00}", min, sec);
 
@@ -91,10 +88,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void ProcessTimeMonster(){
+    private void ProcessTimeMonster()
+    {
         timeMonster -= Time.deltaTime;
 
-        if (timeMonster < 0 && !player.GetComponent<MonsterAI>().enabled){
+        if (timeMonster < 0 && !player.GetComponent<MonsterAI>().enabled)
+        {
             timeMonster = 0;
             TransformMonster();
         }
@@ -102,8 +101,12 @@ public class GameManager : MonoBehaviour
 
     public void BuildWall()
     {
-        wallScore++;
-        floorScore = wallScore / 6;
+        score += 50;
+    }
+
+    public void DestroyWall()
+    {
+        score -= 50;
     }
 
     public void FinishGame()
@@ -113,13 +116,16 @@ public class GameManager : MonoBehaviour
     }
     public void SpawnFloor()
     {
+        if (lastFloor.GetComponent<FloorManager>().id != 0)
+            score += 150;
+
         Vector3 spawnPosition = lastFloor.position;
         spawnPosition.y += 3.200f;
         GameObject objFoor = Instantiate(prefabFloor, spawnPosition, lastFloor.rotation, floors);
         int nextId = lastFloor.GetComponent<FloorManager>().id + 1;
         lastFloor = objFoor.transform;
         lastFloor.GetComponent<FloorManager>().id = nextId;
-        lastFloor.name = "Floor"+nextId;
+        lastFloor.name = "Floor" + nextId;
     }
 
     public void BackNormal()
@@ -133,11 +139,18 @@ public class GameManager : MonoBehaviour
 
     public void TransformMonster()
     {
-        player.GetComponent<MonsterAI>().enabled = true;
-        player.GetComponent<MonsterAI>().ResetAI();
-        player.GetComponent<PlayerController>().enabled = false;
-        player.transform.GetChild(0).gameObject.SetActive(true);
-        AudioManager.instance.ChangeMusicToBadGuy();
+        if (playerFloor.GetComponent<FloorManager>().id == 0)
+        {
+            RandomTimeMonster();
+        }
+        else
+        {
+            player.GetComponent<MonsterAI>().enabled = true;
+            player.GetComponent<MonsterAI>().ResetAI();
+            player.GetComponent<PlayerController>().enabled = false;
+            player.transform.GetChild(0).gameObject.SetActive(true);
+            AudioManager.instance.ChangeMusicToBadGuy();
+        }
     }
 
     private void RandomTimeMonster()
@@ -145,11 +158,13 @@ public class GameManager : MonoBehaviour
         timeMonster = Random.Range(5f, 10f);
     }
 
-    public void ChangeFloor(Transform floor){
+    public void ChangeFloor(Transform floor)
+    {
         this.playerFloor = floor;
     }
 
-    public FloorManager GetFloor(int id){
+    public FloorManager GetFloor(int id)
+    {
         if (id < GameManager.instance.floors.childCount && id >= 0)
         {
             return GameManager.instance.floors.GetChild(id).GetComponent<FloorManager>();

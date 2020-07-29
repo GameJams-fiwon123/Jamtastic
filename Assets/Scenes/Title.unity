@@ -778,7 +778,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: TITLE
+  m_Text: Tower up
 --- !u!222 &1154030545
 CanvasRenderer:
   m_ObjectHideFlags: 0

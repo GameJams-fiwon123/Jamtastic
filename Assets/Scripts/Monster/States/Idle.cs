@@ -47,7 +47,7 @@ public class Idle : State
                 this.sm.CurState = new Walk(this.go, this.sm, null);
             else
             {
-                if (GameManager.instance.playerFloor.GetComponent<FloorManager>().id == 0 && !monsterAI.currentBlock)
+                if (GameManager.instance.playerFloor.GetComponent<FloorManager>().id == 0)
                 {
                     monsterAI.ReturnNormal();
                 }
