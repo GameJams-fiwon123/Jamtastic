@@ -61,7 +61,10 @@ public class PlayerController : MonoBehaviour
             (isBuilding && wall && wall.GetComponent<SpriteRenderer>().enabled) ||
             (isBuilding && wall && !wall.GetComponent<SpriteRenderer>().enabled && !IsOnGround()) ||
             (isBuilding && !wall))
+        {
+            audioBuilding.Stop();
             Walk();
+        }
         else if (isBuilding)
         {
             BuildWall();
@@ -142,7 +145,7 @@ public class PlayerController : MonoBehaviour
             else if (moveInputX < 0)
             {
                 spr.flipX = true;
-                
+
                 if (!isOnLadder)
                     anim.Play("Walk");
             }
