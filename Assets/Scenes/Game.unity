@@ -1300,6 +1300,26 @@ PrefabInstance:
       propertyPath: focusAreaSize.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6726298201649752937, guid: 6476927ac2c20f049ac686bf294289e1,
+        type: 3}
+      propertyPath: verticalOffset
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6726298201649752937, guid: 6476927ac2c20f049ac686bf294289e1,
+        type: 3}
+      propertyPath: verticalSmoothTime
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6726298201649752937, guid: 6476927ac2c20f049ac686bf294289e1,
+        type: 3}
+      propertyPath: focusAreaSize.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6726298201649752937, guid: 6476927ac2c20f049ac686bf294289e1,
+        type: 3}
+      propertyPath: lookSmoothTimeX
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6476927ac2c20f049ac686bf294289e1, type: 3}
 --- !u!1 &1420977278
