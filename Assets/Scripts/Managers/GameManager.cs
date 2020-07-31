@@ -126,6 +126,12 @@ public class GameManager : MonoBehaviour
         hiScoreText.text = "Melhor Pontuação: \n" + PlayerPrefs.GetFloat("hiScore", 0f).ToString();
         gameOverPanel.SetActive(true);
     }
+
+    public void GoBackToTitle(){
+        AudioManager.instance.ChangeMusicToTitle();
+        FindObjectOfType<LevelManager>().LoadTitle();
+    }
+
     public void SpawnFloor()
     {
         if (lastFloor.GetComponent<FloorManager>().id != 0)
