@@ -119,10 +119,20 @@ PrefabInstance:
       propertyPath: m_Size.x
       value: 2.0041056
       objectReference: {fileID: 0}
+    - target: {fileID: 2404326820747271142, guid: 851b9367d2f96304b81ac1fe1c44096a,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2404326821510623842, guid: 851b9367d2f96304b81ac1fe1c44096a,
         type: 3}
       propertyPath: m_Name
       value: Floor0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3642918422242596800, guid: 851b9367d2f96304b81ac1fe1c44096a,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4653274856135762360, guid: 851b9367d2f96304b81ac1fe1c44096a,
         type: 3}
