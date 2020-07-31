@@ -15,21 +15,33 @@ public class AudioManager : MonoBehaviour
 
     public static AudioManager instance;
 
-    void Awake(){
-        instance = this;
+    void Awake()
+    {
+        if (FindObjectsOfType<AudioManager>().Length > 1)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            DontDestroyOnLoad(gameObject);
+            instance = this;
+        }
     }
 
-    public void ChangeMusicToBadGuy(){
+    public void ChangeMusicToBadGuy()
+    {
         musicSource.clip = badGuyMusic;
         musicSource.Play();
     }
 
-    public void ChangeMusicToGoodGuy(){
+    public void ChangeMusicToGoodGuy()
+    {
         musicSource.clip = goodGuyMusic;
         musicSource.Play();
     }
 
-    public void ChangeMusicToTitle(){
+    public void ChangeMusicToTitle()
+    {
         musicSource.clip = titleMusic;
         musicSource.Play();
     }

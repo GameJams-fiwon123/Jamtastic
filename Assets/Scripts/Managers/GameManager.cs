@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
         playerFloor = lastFloor;
         gameOverPanel.SetActive(false);
         RandomTimeMonster();
+        AudioManager.instance.ChangeMusicToGoodGuy();
     }
 
     void Update()
@@ -180,7 +181,8 @@ public class GameManager : MonoBehaviour
     private void RandomTimeMonster()
     {
         randomTimeMonster = Random.Range(15f - diffTransform * 1.5f, 35f - diffTransform * 4f) - randomTimeMonster;
-        if (randomTimeMonster < 0){
+        if (randomTimeMonster < 0)
+        {
             randomTimeMonster = 0f;
         }
         timeMonster = randomTimeMonster;
