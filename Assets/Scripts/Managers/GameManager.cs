@@ -9,9 +9,7 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance;
-
     public float score = 0f;
-
     public float time = 180;
 
     public Transform floors;
@@ -37,7 +35,9 @@ public class GameManager : MonoBehaviour
     private float sec, min;
 
     float timeMonster;
+    float randomTimeMonster;
 
+    public float diffTransform = 1;
 
     void Awake()
     {
@@ -60,7 +60,9 @@ public class GameManager : MonoBehaviour
         if (isStarted)
         {
             ProcessTimeGame();
-            ProcessTimeMonster();
+
+            if (!player.GetComponent<MonsterAI>().enabled)
+                ProcessTimeMonster();
 
             scoreText.text = string.Format("{0:00000000}", score);
         }
@@ -68,7 +70,7 @@ public class GameManager : MonoBehaviour
         {
             min = 0;
             sec = 0;
-            timerText.text = time.ToString("0");
+            timerText.text = "0:00";
         }
     }
 
@@ -96,7 +98,7 @@ public class GameManager : MonoBehaviour
     {
         timeMonster -= Time.deltaTime;
 
-        if (timeMonster < 0 && !player.GetComponent<MonsterAI>().enabled)
+        if (timeMonster < 0)
         {
             timeMonster = 0;
             TransformMonster();
@@ -116,16 +118,27 @@ public class GameManager : MonoBehaviour
     public void FinishGame()
     {
         isStarted = false;
-        if (score > PlayerPrefs.GetFloat("hiScore", 0f)){
+        if (score > PlayerPrefs.GetFloat("hiScore", 0f))
+        {
             PlayerPrefs.SetFloat("hiScore", score);
         }
-        hiScoreText.text =  "Melhor Pontuação: \n" + PlayerPrefs.GetFloat("hiScore", 0f).ToString();
+        hiScoreText.text = "Melhor Pontuação: \n" + PlayerPrefs.GetFloat("hiScore", 0f).ToString();
         gameOverPanel.SetActive(true);
     }
     public void SpawnFloor()
     {
         if (lastFloor.GetComponent<FloorManager>().id != 0)
+        {
             score += 150;
+
+            if (diffTransform < 6)
+                diffTransform += 1;
+
+            if (player.GetComponent<MonsterAI>().sliderEnergy.maxValue < 2f)
+                player.GetComponent<MonsterAI>().sliderEnergy.maxValue += 0.1f;
+
+            RandomTimeMonster();
+        }
 
         Vector3 spawnPosition = lastFloor.position;
         spawnPosition.y += 3.200f;
@@ -154,6 +167,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            randomTimeMonster = 0f;
             player.GetComponent<MonsterAI>().enabled = true;
             player.GetComponent<MonsterAI>().ResetAI();
             player.GetComponent<PlayerController>().enabled = false;
@@ -165,7 +179,11 @@ public class GameManager : MonoBehaviour
 
     private void RandomTimeMonster()
     {
-        timeMonster = Random.Range(5f, 10f);
+        randomTimeMonster = Random.Range(15f - diffTransform * 1.5f, 35f - diffTransform * 4f) - randomTimeMonster;
+        if (randomTimeMonster < 0){
+            randomTimeMonster = 0f;
+        }
+        timeMonster = randomTimeMonster;
     }
 
     public void ChangeFloor(Transform floor)
